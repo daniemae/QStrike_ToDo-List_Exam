@@ -1,53 +1,47 @@
 {
   "tasks": [
     {
-      "title": "checkEmails",
-      "category": "development",
+      "id": "611",
+      "title": "make integration test checklist",
+      "category": "documentation",
       "priority": "medium",
-      "dueDate": "2024-07-11",
-      "id": "769"
-    },
-    {
-      "title": "fix bug",
-      "category": "others",
-      "priority": "low",
-      "dueDate": "2024-07-18",
-      "id": "3"
-    },
-    {
-      "id": "671",
-      "title": "make new system",
-      "category": "development",
-      "priority": "low",
-      "dueDate": "2024-07-11"
+      "dueDate": "2024-07-13"
     }
   ],
   "category": [
     {
-      "name": "documentation"
+      "name": "documentation",
+      "id": "2bfb"
     },
     {
-      "name": "development"
+      "name": "development",
+      "id": "25b7"
     },
     {
-      "name": "maintenance"
+      "name": "maintenance",
+      "id": "a884"
     },
     {
-      "name": "testing"
+      "name": "testing",
+      "id": "23c0"
     },
     {
-      "name": "others"
+      "name": "others",
+      "id": "e3b1"
     }
   ],
   "priority": [
     {
-      "name": "low"
+      "name": "low",
+      "id": "5ea4"
     },
     {
-      "name": "medium"
+      "name": "medium",
+      "id": "b332"
     },
     {
-      "name": "high"
+      "name": "high",
+      "id": "7a41"
     }
   ]
 }

@@ -17,19 +17,34 @@
     </div>
 
     <nav class="filter">
-      <button @click="filter = 'all'">All tasks</button>
+      <button @click="getAllToDo()">All tasks</button>
+      <select v-model="selectCateg" @click="filterCateg()">
+        <option value="" disabled selected>Category</option>
+        <option
+          v-for="(categ, i) in categories"
+          :key="i"
+          :value="categ.name"
+          :label="categ.name"
+        ></option>
+      </select>
+      <select v-model="selectPrio" @click="filterCateg()">
+        <option value="" disabled selected>Priority</option>
+        <option
+          v-for="(prio, ind) in priorities"
+          :key="ind"
+          :value="prio.name"
+          :label="prio.name"
+        ></option>
+      </select>
     </nav>
 
     <div class="loading" v-if="toDoStore.isLoading">Loading tasks ...</div>
-
-    <div class="task-list" v-if="filter === 'all'">
-      <p>You have {{ toDoStore.totalCount }} tasks left to do</p>
-      <div v-for="task in tasks" :key="task.id">
+    <div class="task-list">
+      <p>You have total {{ toDoStore.totalCount }} tasks</p>
+      <div v-for="task in getFilterData" :key="task.id">
         <ToDoDetails :task="task" @editTask="editItem" />
       </div>
     </div>
-    <!-- <div class="task-list" v-else>
-    </div> -->
   </main>
 </template>
 
@@ -47,7 +62,7 @@ export default {
     const toDoStore = useToDoStore()
     const categoryStore = useCategoryStore()
     const priorityStore = usePriorityStore()
-    const { tasks, loading, totalCount, favCount } = storeToRefs(toDoStore)
+    const { tasks, loading, totalCount, getFilterData } = storeToRefs(toDoStore)
     const { categories } = storeToRefs(categoryStore)
     const { priorities } = storeToRefs(priorityStore)
     toDoStore.getTasks()
@@ -56,21 +71,37 @@ export default {
     const mode = ref('Add')
     const selectedToDo = ref({ title: '', category: '', priority: '', dueDate: '' })
 
-    const filter = ref('all')
+    const selectCateg = ref('')
+    const selectPrio = ref('')
+
     const editItem = (item) => {
       mode.value = 'Edit'
       Object.assign(selectedToDo.value, item)
     }
+
+    const filterCateg = () => {
+      toDoStore.setFilterType('')
+      toDoStore.setCategType(selectCateg)
+      toDoStore.setPrioType(selectPrio)
+    }
+
+    const getAllToDo = () => {
+      toDoStore.setFilterType('All')
+    }
+
     return {
       editItem,
+      getAllToDo,
+      filterCateg,
+      selectCateg,
+      selectPrio,
       mode,
       selectedToDo,
       toDoStore,
-      filter,
       tasks,
       loading,
       totalCount,
-      favCount,
+      getFilterData,
       categories,
       priorities
     }

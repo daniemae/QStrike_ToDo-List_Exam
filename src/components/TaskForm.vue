@@ -14,7 +14,10 @@
     </select>
     <input type="date" v-model="toDoDetails.dueDate" />
     <button>{{ fillType }}</button>
-    <button v-if="Object.values(toDoDetails).some((value) => value != '')" @click="handleClear()">
+    <button
+      v-if="Object.values(toDoDetails).some((value) => value != '') && fillType == 'Add'"
+      @click="handleClear()"
+    >
       Clear
     </button>
   </form>
@@ -54,13 +57,20 @@ export default {
     const handleSubmit = () => {
       if (Object.values(toDoDetails.value).every((value) => value != '')) {
         if (props.fillType == 'Add') {
-          taskStore.addTask({
-            title: toDoDetails.value.title,
-            category: toDoDetails.value.category,
-            priority: toDoDetails.value.priority,
-            dueDate: toDoDetails.value.dueDate,
-            id: Math.floor(Math.random() * 1000).toString()
-          })
+          const selectedDate = new Date(toDoDetails.value.dueDate)
+          const today = new Date()
+          if (selectedDate > today) {
+            taskStore.addTask({
+              title: toDoDetails.value.title,
+              category: toDoDetails.value.category,
+              priority: toDoDetails.value.priority,
+              dueDate: toDoDetails.value.dueDate,
+              id: Math.floor(Math.random() * 1000).toString()
+            })
+            toDoDetails.value = { title: '', category: '', priority: '', dueDate: '' }
+          } else {
+            alert('Date must not set from past')
+          }
         } else {
           taskStore.editTask({
             title: toDoDetails.value.title,
@@ -69,9 +79,10 @@ export default {
             dueDate: toDoDetails.value.dueDate,
             id: toDoDetails.value.id
           })
+          toDoDetails.value = { title: '', category: '', priority: '', dueDate: '' }
         }
-
-        toDoDetails.value = { title: '', category: '', priority: '', dueDate: '' }
+      } else {
+        alert('Please fill-up all required fields')
       }
     }
     const handleClear = () => {

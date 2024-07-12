@@ -9,13 +9,20 @@
     </div>
   </div>
   <span
-    class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+    class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 rounded-md bg-gray-50 ring-1 ring-inset ring-gray-500/10"
     >{{ task.category }}</span
   >
   <span :class="priorityColor(task.priority)">{{ task.priority }}</span>
   <span
-    class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10"
-    >{{ task.dueDate }}</span
+    v-if="isExpired(task.dueDate) != 'expired'"
+    class="inline-flex items-center px-2 py-1 text-xs font-medium text-purple-700 rounded-md bg-purple-50 ring-1 ring-inset ring-purple-700/10"
+    >{{ isExpired(task.dueDate) }}</span
+  >
+
+  <span
+    v-else
+    class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 rounded-md bg-red-50 ring-1 ring-inset ring-red-600/10"
+    >{{ isExpired(task.dueDate) }}</span
   >
 </template>
 <script>
@@ -35,7 +42,13 @@ export default {
         return 'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10'
       }
     }
-    return { toDoStore, priorityColor }
+    const isExpired = (dueDate) => {
+      const currentYear = new Date().getFullYear()
+      const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0')
+      const currentDate = new Date().getDate().toString().padStart(2, '0')
+      return `${currentYear}-${currentMonth}-${currentDate}` <= dueDate ? dueDate : 'expired'
+    }
+    return { toDoStore, priorityColor, isExpired }
   }
 }
 </script>
