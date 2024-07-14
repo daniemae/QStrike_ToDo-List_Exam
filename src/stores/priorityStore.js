@@ -6,7 +6,7 @@ export const usePriorityStore = defineStore('priorityStore', {
   }),
   actions: {
     async getPriorities() {
-      const res = await fetch('http://localhost:3000/priority')
+      const res = await fetch('https://todo-list-api-e8q0.onrender.com/priority')
       const data = await res.json()
       this.priorities = data
     }

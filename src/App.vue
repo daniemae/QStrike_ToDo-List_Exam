@@ -6,9 +6,9 @@
       <h1>ToDo List</h1>
     </header>
 
-    <!-- newTaskForm -->
+    <!-- newToDoForm -->
     <div class="new-task-form">
-      <TaskForm
+      <ToDoForm
         :categoryList="categories"
         :priorityList="priorities"
         :fillType="mode"
@@ -16,29 +16,31 @@
       />
     </div>
 
-    <nav class="filter">
-      <button @click="getAllToDo()">All tasks</button>
-      <select v-model="selectCateg" @click="filterCateg()">
-        <option value="" disabled selected>Category</option>
-        <option
-          v-for="(categ, i) in categories"
-          :key="i"
-          :value="categ.name"
-          :label="categ.name"
-        ></option>
-      </select>
-      <select v-model="selectPrio" @click="filterCateg()">
-        <option value="" disabled selected>Priority</option>
-        <option
-          v-for="(prio, ind) in priorities"
-          :key="ind"
-          :value="prio.name"
-          :label="prio.name"
-        ></option>
-      </select>
-    </nav>
+    <div class="flex">
+      <nav class="w-64 filter">
+        <button @click="getAllToDo()">All tasks</button>
+        <select v-model="selectCateg" @click="filterCateg()">
+          <option value="" disabled selected>Category</option>
+          <option
+            v-for="(categ, i) in categories"
+            :key="i"
+            :value="categ.name"
+            :label="categ.name"
+          ></option>
+        </select>
+        <select v-model="selectPrio" @click="filterCateg()">
+          <option value="" disabled selected>Priority</option>
+          <option
+            v-for="(prio, ind) in priorities"
+            :key="ind"
+            :value="prio.name"
+            :label="prio.name"
+          ></option>
+        </select>
+      </nav>
+    </div>
 
-    <div class="loading" v-if="toDoStore.isLoading">Loading tasks ...</div>
+    <div class="loading" v-if="toDoStore.isLoading">Loading todo lists ...</div>
     <div class="task-list">
       <p>You have total {{ toDoStore.totalCount }} tasks</p>
       <div v-for="task in getFilterData" :key="task.id">
@@ -51,13 +53,13 @@
 <script>
 import { ref } from 'vue'
 import ToDoDetails from './components/ToDoDetails.vue'
-import TaskForm from './components/TaskForm.vue'
+import ToDoForm from './components/ToDoForm.vue'
 import { useToDoStore } from './stores/toDoStore'
 import { useCategoryStore } from './stores/categoryStore'
 import { usePriorityStore } from './stores/priorityStore'
 import { storeToRefs } from 'pinia'
 export default {
-  components: { ToDoDetails, TaskForm },
+  components: { ToDoDetails, ToDoForm },
   setup() {
     const toDoStore = useToDoStore()
     const categoryStore = useCategoryStore()
