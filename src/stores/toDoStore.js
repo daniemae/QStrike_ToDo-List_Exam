@@ -46,8 +46,6 @@ export const useToDoStore = defineStore('toDoStore', {
       this.isLoading = false
     },
     async addTask(task) {
-      this.tasks.push(task)
-      this.selectedFilter = 'All'
       // const res = await fetch('http://localhost:3000/tasks', {
       const res = await fetch('https://todo-list-api-e8q0.onrender.com/tasks', {
         method: 'POST',
@@ -56,12 +54,14 @@ export const useToDoStore = defineStore('toDoStore', {
       })
       if (res.error) {
         console.log(res.error)
+      } else {
+        alert('Added successfully')
+        this.tasks.push(task)
+        this.selectedFilter = 'All'
       }
     },
     async editTask(data) {
       const foundIndex = this.tasks.findIndex((x) => x.id == data.id)
-      this.tasks[foundIndex] = data
-      this.selectedFilter = 'All'
       // const res = await fetch(`http://localhost:3000/tasks/${data.id}`, {
       const res = await fetch(`https://todo-list-api-e8q0.onrender.com/tasks/${data.id}`, {
         method: 'PUT',
@@ -71,12 +71,13 @@ export const useToDoStore = defineStore('toDoStore', {
 
       if (res.error) {
         console.log(res.error)
+      } else {
+        alert('Edit successfully')
+        this.tasks[foundIndex] = data
+        this.selectedFilter = 'All'
       }
     },
     async deleteTask(id) {
-      this.tasks = this.tasks.filter((rec) => {
-        return rec.id !== id
-      })
       this.selectedFilter = 'All'
       // const res = await fetch(`http://localhost:3000/tasks/${id.toString()}`, {
       const res = await fetch(`https://todo-list-api-e8q0.onrender.com/tasks/${id.toString()}`, {
@@ -84,6 +85,11 @@ export const useToDoStore = defineStore('toDoStore', {
       })
       if (res.error) {
         console.log(res.error)
+      } else {
+        alert('Deleted successfully')
+        this.tasks = this.tasks.filter((rec) => {
+          return rec.id !== id
+        })
       }
     },
 
